@@ -1,0 +1,3 @@
+<% common = "--format pretty" %>
+default: <%= common %> --tags 'not @skip and not @wip'
+wip: <%= common %> --tags @wip
