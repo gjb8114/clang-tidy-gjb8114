@@ -1,0 +1,19 @@
+name: Notify Docs Repo
+
+on:
+  push:
+    branches:
+      - main
+  release:
+    types: [published]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send repository_dispatch to docs repo
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          repository: gjb8114/gjb8114.github.io
+          event-type: clang-tidy-gjb8114-updated
+          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
