@@ -1,5 +1,5 @@
 # language: zh-CN
-功能: R-1-4-5 禁止 禁止 switch 语句仅包含 default
+功能: R-1-4-5 禁止 switch 语句仅包含 default
 
   @acceptance
   场景: 报告仅包含 default 的 switch 语句
