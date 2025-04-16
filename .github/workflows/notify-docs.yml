@@ -14,6 +14,7 @@ jobs:
       - name: Send repository_dispatch to docs repo
         uses: peter-evans/repository-dispatch@v3
         with:
+          token: ${{ secrets.PAT }}
           repository: gjb8114/gjb8114.github.io
           event-type: clang-tidy-gjb8114-updated
           client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
