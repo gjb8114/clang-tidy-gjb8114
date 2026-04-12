@@ -6,6 +6,14 @@
 
 您可以通过以下几种方式安装此工具：
 
+###### 使用 Docker（推荐）
+
+最简单的使用方式是通过 Docker。从 GitHub Container Registry 拉取预构建镜像：
+
+```bash
+docker pull ghcr.io/gjb8114/clang-tidy-gjb8114:latest
+```
+
 ###### 使用预构建包
 
 从发布页面下载适用于您平台的预构建包。
@@ -16,6 +24,24 @@
 
 ### 命令行使用
 此工具根据 GJB-8114 编码标准为 C/C++ 代码提供静态分析检查。使用 clang-tidy 运行它：
+
+###### 使用 Docker
+
+挂载您的源代码目录并使用 Docker 运行检查：
+
+```bash
+docker run --rm -v "$(pwd)":/workspace ghcr.io/gjb8114/clang-tidy-gjb8114:latest \
+    your_file.cpp -checks='-*,gjb8114-*' -load='/usr/local/lib/libclang-tidy-gjb8114.so'
+```
+
+列出所有可用检查：
+
+```bash
+docker run --rm ghcr.io/gjb8114/clang-tidy-gjb8114:latest \
+    -list-checks -checks='-*,gjb8114-*' -load='/usr/local/lib/libclang-tidy-gjb8114.so'
+```
+
+###### 不使用 Docker
 
 ```bash
 clang-tidy your_file.cpp -checks='-*,gjb8114-*' -load='/path/to/libclang-tidy-gjb8114.so'
@@ -31,6 +57,11 @@ clang-tidy your_file.cpp -checks='-*,gjb8114-*' -load='/path/to/libclang-tidy-gj
 `list-checks` 命令可以列出所有可用的检查：
 
 ```bash
+# 使用 Docker
+docker run --rm ghcr.io/gjb8114/clang-tidy-gjb8114:latest \
+    -list-checks -checks='-*,gjb8114-*' -load='/usr/local/lib/libclang-tidy-gjb8114.so'
+
+# 不使用 Docker
 clang-tidy -list-checks -checks='-*,gjb8114-*' -load='/path/to/libclang-tidy-gjb8114.so'
 ```
 
@@ -45,6 +76,20 @@ clang-tidy -list-checks -checks='-*,gjb8114-*' -load='/path/to/libclang-tidy-gjb
 - cmake，版本3.23或更高
 - llvm
 - ruby gems
+
+###### 使用 Docker 构建
+
+您无需在本机安装任何依赖，可以直接使用 Docker 构建项目：
+
+```bash
+docker build -t clang-tidy-gjb8114 .
+```
+
+构建特定版本（调试模式）：
+
+```bash
+docker build --build-arg BUILD_TYPE=Debug -t clang-tidy-gjb8114:debug .
+```
 
 ###### macOS
 
