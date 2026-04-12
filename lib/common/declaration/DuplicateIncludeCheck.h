@@ -27,8 +27,8 @@ private:
                             CharSourceRange FilenameRange,
                             OptionalFileEntryRef File, StringRef SearchPath,
                             StringRef RelativePath,
-                            const Module *SuggestedModule, bool ModuleImported,
-                            SrcMgr::CharacteristicKind FileType) override;
+                            const Module *SuggestedModule,
+                            bool ModuleImported) override;
 
     void FileChanged(SourceLocation Loc, FileChangeReason Reason,
                      SrcMgr::CharacteristicKind FileType,
