@@ -81,6 +81,8 @@ clang-tidy -list-checks -checks='-*,gjb8114-*' -load='/path/to/libclang-tidy-gjb
 
 您无需在本机安装任何依赖，可以直接使用 Docker 构建项目：
 
+> **注意**：Docker 配置默认使用 **LLVM 19**（由 `Dockerfile` 中的 `ARG LLVM_VERSION=19` 指定）。
+
 ```bash
 docker build -t clang-tidy-gjb8114 .
 ```
