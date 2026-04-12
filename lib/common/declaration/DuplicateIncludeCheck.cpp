@@ -32,7 +32,7 @@ void DuplicateIncludeCheck::IncludeTracker::InclusionDirective(
     SourceLocation HashLoc, const Token &IncludeTok, StringRef FileName,
     bool IsAngled, CharSourceRange FilenameRange, OptionalFileEntryRef File,
     StringRef SearchPath, StringRef RelativePath, const Module *SuggestedModule,
-    bool ModuleImported) {
+    bool ModuleImported, SrcMgr::CharacteristicKind FileType) {
 
   if (IsAngled || !File || FileStack.empty())
     return;

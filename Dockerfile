@@ -1,7 +1,7 @@
 # Stage 0: Configure the LLVM APT repository (throwaway — not inherited by runtime)
 FROM ubuntu:24.04 AS repo-setup
 
-ARG LLVM_VERSION=18
+ARG LLVM_VERSION=19
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -21,7 +21,7 @@ RUN wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key \
 # Stage 1: Build
 FROM ubuntu:24.04 AS builder
 
-ARG LLVM_VERSION=18
+ARG LLVM_VERSION=19
 ARG BUILD_TYPE=Release
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -53,7 +53,7 @@ RUN cmake \
 # Stage 2: Runtime image
 FROM ubuntu:24.04 AS runtime
 
-ARG LLVM_VERSION=18
+ARG LLVM_VERSION=19
 
 ENV DEBIAN_FRONTEND=noninteractive
 
