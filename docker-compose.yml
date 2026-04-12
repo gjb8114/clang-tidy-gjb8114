@@ -6,4 +6,4 @@ services:
     working_dir: /workspace
     entrypoint: ["clang-tidy"]
     # Example: override with your own arguments
-    # command: ["your_file.cpp", "-checks='-*,gjb8114-*'", "-load=/usr/local/lib/libclang-tidy-gjb8114.so"]
+    # command: ["your_file.cpp", "-checks=-*,gjb8114-*", "-load=/usr/local/lib/libclang-tidy-gjb8114.so"]

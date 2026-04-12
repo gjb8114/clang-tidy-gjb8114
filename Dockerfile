@@ -1,5 +1,5 @@
-# Stage 0: Shared base with LLVM apt repository configured
-FROM ubuntu:24.04 AS llvm-base
+# Stage 0: Configure the LLVM APT repository (throwaway — not inherited by runtime)
+FROM ubuntu:24.04 AS repo-setup
 
 ARG LLVM_VERSION=18
 
@@ -12,19 +12,25 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     wget \
     && rm -rf /var/lib/apt/lists/*
 
-# Add the official LLVM apt repository using the recommended binary GPG format
+# Import the GPG key into a dedicated keyring and scope it via signed-by=
 RUN wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key \
-    | gpg --dearmor -o /etc/apt/trusted.gpg.d/apt.llvm.org.gpg \
-    && echo "deb http://apt.llvm.org/$(lsb_release -cs)/ llvm-toolchain-$(lsb_release -cs)-${LLVM_VERSION} main" \
+    | gpg --dearmor -o /usr/share/keyrings/llvm.gpg \
+    && echo "deb [signed-by=/usr/share/keyrings/llvm.gpg] https://apt.llvm.org/$(lsb_release -cs)/ llvm-toolchain-$(lsb_release -cs)-${LLVM_VERSION} main" \
        > /etc/apt/sources.list.d/llvm.list
 
 # Stage 1: Build
-FROM llvm-base AS builder
+FROM ubuntu:24.04 AS builder
 
 ARG LLVM_VERSION=18
 ARG BUILD_TYPE=Release
 
+ENV DEBIAN_FRONTEND=noninteractive
+
+COPY --from=repo-setup /usr/share/keyrings/llvm.gpg /usr/share/keyrings/llvm.gpg
+COPY --from=repo-setup /etc/apt/sources.list.d/llvm.list /etc/apt/sources.list.d/llvm.list
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
     clang-${LLVM_VERSION} \
     clang-tidy-${LLVM_VERSION} \
     cmake \
@@ -45,11 +51,17 @@ RUN cmake \
     && cmake --build build --target clang-tidy-gjb8114 -- -j"$(nproc)"
 
 # Stage 2: Runtime image
-FROM llvm-base AS runtime
+FROM ubuntu:24.04 AS runtime
 
 ARG LLVM_VERSION=18
 
+ENV DEBIAN_FRONTEND=noninteractive
+
+COPY --from=repo-setup /usr/share/keyrings/llvm.gpg /usr/share/keyrings/llvm.gpg
+COPY --from=repo-setup /etc/apt/sources.list.d/llvm.list /etc/apt/sources.list.d/llvm.list
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
     clang-tidy-${LLVM_VERSION} \
     && rm -rf /var/lib/apt/lists/*
 
