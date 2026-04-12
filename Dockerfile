@@ -48,7 +48,7 @@ RUN cmake \
     -DClang_DIR=/usr/lib/llvm-${LLVM_VERSION}/lib/cmake/clang \
     -DCMAKE_PROGRAM_PATH=/usr/lib/llvm-${LLVM_VERSION}/bin \
     -S . -B build \
-    && cmake --build build --target clang-tidy-gjb8114 -- -j"$(nproc)"
+    && cmake --build build --target clang-tidy-gjb8114 --parallel "$(nproc)"
 
 # Stage 2: Runtime image
 FROM ubuntu:24.04 AS runtime
