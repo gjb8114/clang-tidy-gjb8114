@@ -1,0 +1,19 @@
+# Git metadata
+.git
+.gitignore
+
+# Build artifacts
+build/
+
+# Editor / IDE
+.vscode
+.idea
+*.swp
+
+# Documentation & scripts not needed for the build
+*.md
+Gemfile
+Gemfile.lock
+Rakefile
+cucumber.yml
+features/
