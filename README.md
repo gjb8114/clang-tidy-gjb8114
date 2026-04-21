@@ -14,6 +14,12 @@
 docker pull ghcr.io/gjb8114/clang-tidy-gjb8114:latest
 ```
 
+如果拉取时出现 `Error response from daemon: denied`，请检查：
+
+- `ghcr.io/gjb8114/clang-tidy-gjb8114` 包可见性是否为 **Public**
+- 若镜像保持私有，是否已使用具备 `read:packages` 权限的令牌执行 `docker login ghcr.io`
+- 包设置中的 **Manage Actions access** 是否已授权本仓库工作流访问该包
+
 ###### 使用预构建包
 
 从发布页面下载适用于您平台的预构建包。
